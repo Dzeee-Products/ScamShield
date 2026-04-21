@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Clock</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .clock { margin: 20px; font-size: 2em; }
+    </style>
+</head>
+<body>
+    <h1>Digital Clock</h1>
+    <div class="clock" id="clock"></div>
+
+    <script>
+        function updateClock() {
+            const utcDate = new Date();
+            const options = { timeZone: 'UTC', hour12: false,  
+                                year: 'numeric', month: '2-digit', day: '2-digit', 
+                                hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const utcTime = utcDate.toLocaleString('en-US', options);
+
+            const timezones = {
+                'UTC': 'UTC',
+                'EST': 'America/New_York',
+                'CET': 'Europe/Berlin',
+                'IST': 'Asia/Kolkata',
+                'JST': 'Asia/Tokyo',
+                'AEST': 'Australia/Sydney'
+            };
+            let clockDisplay = '';
+
+            for (const [abbreviation, timeZone] of Object.entries(timezones)) {
+                const timeZoneDate = new Date();
+                const timeZoneTime = timeZoneDate.toLocaleString('en-US', { timeZone, ...options });
+                clockDisplay += `${abbreviation}: ${timeZoneTime}\n`;
+            }
+
+            document.getElementById('clock').innerText = clockDisplay;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
